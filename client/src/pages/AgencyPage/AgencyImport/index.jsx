@@ -77,17 +77,10 @@ function AgencyImport() {
                 id="style-2"
                 sx={{
                     backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Button onClick={() => navigate('/agency')} variant="outlined" sx={{ margin: '10px' }}>
-                    <KeyboardArrowLeftOutlinedIcon />
-                    Quay lại
-                </Button>
-
                 <Box
                     sx={{
                         margin: '10px 10px',

@@ -1,13 +1,8 @@
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Box } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
-import guaranteeLogo from '~/assets/image/guaranteelogo.jpg';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
-import axiosClient from '~/api/axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 function AdminGuarantee() {
     const navigate = useNavigate();
@@ -16,9 +11,8 @@ function AdminGuarantee() {
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await axiosClient.get('/guarantee');
+                const res = await axios.get('http://localhost:5000/guarantee');
                 setGuarantee(res.data);
-                // console.log(res.data);
             } catch (err) {
                 console.error(err);
             }
@@ -33,40 +27,43 @@ function AdminGuarantee() {
                     id="style-2"
                     sx={{
                         backgroundColor: '#fff',
-                        width: 'calc(100% - var(--default-layout-width-sidebar))',
-                        height: 'calc(100vh - var(--default-layout-height-header))',
-                        float: 'right',
                         overflowY: 'scroll',
                     }}
                 >
                     <Box sx={{ display: 'flex', justifyContent: 'center', margin: '40px 0' }}>
-                        {guarantee.map((guarantee) => {
-                            return (
-                                <>
-                                    <Card
-                                        key={guarantee._id}
-                                        sx={{ maxWidth: 345, margin: '0 20px' }}
-                                        onClick={() => {
-                                            navigate(`/admin/guarantee/${guarantee._id}`);
-                                        }}
-                                    >
-                                        <CardActionArea>
-                                            <CardMedia component="img" height="250" image={guaranteeLogo} alt="Image" />
-                                            <CardContent>
-                                                <Typography
-                                                    sx={{ textAlign: 'center', fontSize: '1.2rem' }}
-                                                    gutterBottom
-                                                    variant="h4"
-                                                    component="div"
+                        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+                            <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">STT</TableCell>
+                                        <TableCell align="center">Tên Trung Tâm Bảo Hành</TableCell>
+                                        <TableCell align="center">Xem chi tiết</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {guarantee.map((g, index) => (
+                                        <TableRow
+                                            id={g._id}
+                                            className="row"
+                                            key={g._id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="center">{index + 1}</TableCell>
+                                            <TableCell align="center">{g.name}</TableCell>
+                                            <TableCell align="center">
+                                                <Button
+                                                    variant="contained"
+                                                    color="info"
+                                                    onClick={() => navigate(`/admin/guarantee/${g._id}`)}
                                                 >
-                                                    {guarantee.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </>
-                            );
-                        })}
+                                                    Xem chi tiết
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Box>
                 </Box>
             </>

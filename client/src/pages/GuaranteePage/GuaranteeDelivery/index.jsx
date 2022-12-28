@@ -1,14 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { useEffect, useState } from 'react';
 import axiosClient from '~/api/axiosClient';
 
 function GuaranteeDelivery() {
     const [deliveries, setDeliveries] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const getData = async () => {
@@ -69,18 +66,11 @@ function GuaranteeDelivery() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Button onClick={() => navigate('/guarantee')} variant="outlined" sx={{ margin: '10px' }}>
-                    <KeyboardArrowLeftOutlinedIcon />
-                    Quay lại
-                </Button>
-
                 <Box
                     sx={{
                         margin: '10px 10px',

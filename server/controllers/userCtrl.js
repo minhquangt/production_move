@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 const userCtrl = {
     login: async (req, res) => {
         try {
-            const { username, password } = req.body;
-            const user = await Users.findOne({ username });
+            const { email, password } = req.body;
+            const user = await Users.findOne({ email });
 
             if (!user) {
                 return res.json({ msg: 'Email not found', login: false });
@@ -23,9 +23,9 @@ const userCtrl = {
                 msg: 'Login is correct',
                 login: true,
                 id: user._id,
-                username: user.name,
+                name: user.name,
                 role: user.role,
-                email: user.username,
+                email: user.email,
                 idPage: user.idPage,
             });
         } catch (err) {
@@ -38,7 +38,7 @@ const userCtrl = {
             const { name, email, role, sdt, address } = req.body;
 
             // check email is already exist
-            const user = await Users.findOne({ username: email });
+            const user = await Users.findOne({ email: email });
             if (user) {
                 return res.json({ msg: 'Email registered', register: false });
             }
@@ -47,18 +47,19 @@ const userCtrl = {
             const passwordHash = await bcrypt.hash(req.body.password, 10);
             const newUser = new Users({
                 name,
-                username: email,
+                email,
                 password: passwordHash,
                 role,
                 sdt,
                 address,
+                idPage: '',
             });
-
             // Save mongodb
             await newUser.save();
 
             res.json({ msg: 'Register successfully', register: true });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ msg: error.message });
         }
     },

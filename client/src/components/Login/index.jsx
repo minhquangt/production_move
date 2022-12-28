@@ -1,17 +1,16 @@
-import * as React from 'react';
-import SendIcon from '@mui/icons-material/Send';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import axiosClient from '~/api/axiosClient';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useNavigate } from 'react-router-dom';
+import axiosClient from '~/api/axiosClient';
 
 const theme = createTheme();
 
@@ -24,17 +23,16 @@ export default function Login() {
 
     const handleSubmit = async () => {
         try {
-            const res = await axiosClient.post('/user/login', { username, password });
+            const res = await axiosClient.post('/user/login', { email: username, password });
             if (res.data.login) {
                 setUsername('');
                 setPassword('');
-                console.log(res.data);
                 localStorage.setItem('role', res.data.role);
                 localStorage.setItem('id', res.data.id);
                 localStorage.setItem('name', res.data.username);
                 localStorage.setItem('email', res.data.email);
                 localStorage.setItem('idPage', res.data.idPage);
-                navigate(`/${res.data.role}`);
+                navigate(`/`);
                 window.location.reload();
             } else {
                 setError(res.data.msg);
@@ -70,7 +68,7 @@ export default function Login() {
                         }}
                     >
                         <Typography component="h1" variant="h2" mb={2}>
-                            BigCorp
+                            BIGCORP
                         </Typography>
                         <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
                             <LockOutlinedIcon />

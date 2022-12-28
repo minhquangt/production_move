@@ -1,24 +1,17 @@
-import './UserGuaranteeDetails.scss';
+import { Box, Button, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, Button } from '@mui/material';
-import { Typography } from '@mui/material';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import SendIcon from '@mui/icons-material/Send';
-
+import './UserGuaranteeDetails.scss';
 import { useEffect, useState } from 'react';
 import axiosClient from '~/api/axiosClient';
-
 import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 
 const styleModal = {
@@ -76,7 +69,7 @@ function UserFactoryDetails() {
         try {
             const res = await axiosClient.post('/user/register', {
                 name,
-                username: email,
+                email,
                 password,
                 sdt,
                 address,
@@ -128,21 +121,15 @@ function UserFactoryDetails() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Typography variant="h4" sx={{ margin: '10px', color: '#666' }}>
-                    User Factory
-                </Typography>
-
                 {/* btn new user */}
                 <Button
-                    variant="outlined"
-                    color="secondary"
+                    variant="contained"
+                    color="primary"
                     sx={{ margin: '10px' }}
                     onClick={() => {
                         setName('');
@@ -152,22 +139,19 @@ function UserFactoryDetails() {
                         setOpenModalCreate(true);
                     }}
                 >
-                    <AddCircleOutlineOutlinedIcon sx={{ marginRight: '5px' }} />
-                    New
+                    Tạo mới
                 </Button>
 
                 <TableContainer sx={{ marginBottom: '40px' }} component={Paper}>
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Email</TableCell>
-                                {/* <TableCell>Password</TableCell> */}
-                                <TableCell>SDT</TableCell>
-                                <TableCell>Address</TableCell>
-                                <TableCell align="center">Chỉnh sửa</TableCell>
-                                <TableCell align="center">Xóa</TableCell>
+                                <TableCell align="center">STT</TableCell>
+                                <TableCell align="center">Tên</TableCell>
+                                <TableCell align="center">Email</TableCell>
+                                <TableCell align="center">Số điện thoại</TableCell>
+                                <TableCell align="center">Địa chỉ</TableCell>
+                                <TableCell align="center">Hành động</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -178,41 +162,38 @@ function UserFactoryDetails() {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell align="center">{index + 1}</TableCell>
                                     <TableCell component="th" scope="row" sortDirection="desc">
                                         {row.name}
                                     </TableCell>
-                                    <TableCell>{row.username}</TableCell>
-                                    {/* <TableCell size="small">{row.password}</TableCell> */}
-                                    <TableCell>{row.sdt}</TableCell>
-                                    <TableCell>{row.address}</TableCell>
-                                    <TableCell
-                                        align="center"
-                                        onClick={() => {
-                                            setOpenModalEdit(true);
-                                            setId(row._id);
-                                            setName(row.name);
-                                            setEmail(row.username);
-                                            setAddress(row.address);
-                                            setSdt(row.sdt);
-                                        }}
-                                    >
-                                        <Button variant="text">
-                                            <EditOutlinedIcon />
-                                            Edit
-                                        </Button>
-                                    </TableCell>
+                                    <TableCell align="center">{row.email}</TableCell>
+                                    <TableCell align="center">{row.sdt}</TableCell>
+                                    <TableCell align="center">{row.address}</TableCell>
                                     <TableCell align="center">
                                         <Button
-                                            variant="text"
+                                            variant="contained"
+                                            sx={{ marginRight: '10px' }}
+                                            color="warning"
+                                            onClick={() => {
+                                                setOpenModalEdit(true);
+                                                setId(row._id);
+                                                setName(row.name);
+                                                setEmail(row.email);
+                                                setAddress(row.address);
+                                                setSdt(row.sdt);
+                                            }}
+                                        >
+                                            Sửa
+                                        </Button>
+                                        <Button
+                                            variant="contained"
                                             color="error"
                                             onClick={() => {
                                                 setOpenModalDelete(true);
                                                 setId(row._id);
                                             }}
                                         >
-                                            <DeleteSweepOutlinedIcon />
-                                            Delete
+                                            Xóa
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -236,16 +217,16 @@ function UserFactoryDetails() {
                 <Fade in={openModalCreate}>
                     <Box sx={styleModal}>
                         <Typography id="transition-modal-title" variant="h6" component="h2">
-                            Create User Admin
+                            Tạo tài khoản kho sản xuất
                         </Typography>
                         <ValidatorForm onSubmit={handleCreateUser}>
                             <TextValidator
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={name}
-                                label="Name"
+                                label="Tên"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập tên người dùng']}
                                 onChange={(e) => setName(e.target.value)}
@@ -256,7 +237,7 @@ function UserFactoryDetails() {
                                 value={email}
                                 label="Email"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required', 'isEmail']}
                                 errorMessages={['Vui lòng nhập email', 'Email không hợp lệ']}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -265,10 +246,10 @@ function UserFactoryDetails() {
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={password}
-                                label="Password"
+                                label="Mật khẩu"
                                 type="password"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập mật khẩu']}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -277,10 +258,10 @@ function UserFactoryDetails() {
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={passwordX2}
-                                label="Password Again"
+                                label="Xác nhận mật khẩu"
                                 type="password"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['isPasswordMatch', 'required']}
                                 errorMessages={['Nhập lại mật khẩu không chính xác', 'Vui lòng nhập mật khẩu']}
                                 onChange={(e) => setPasswordX2(e.target.value)}
@@ -291,7 +272,7 @@ function UserFactoryDetails() {
                                 value={sdt}
                                 label="SDT"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập số điện thoại']}
                                 onChange={(e) => setSdt(e.target.value)}
@@ -300,21 +281,15 @@ function UserFactoryDetails() {
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={address}
-                                label="Address"
+                                label="Địa chỉ"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập địa chỉ']}
                                 onChange={(e) => setAddress(e.target.value)}
                             />
-                            <Button
-                                sx={{ marginTop: '10px' }}
-                                variant="contained"
-                                startIcon={<SendIcon />}
-                                fullWidth
-                                type="submit"
-                            >
-                                Đăng ký
+                            <Button sx={{ marginTop: '10px' }} variant="contained" fullWidth type="submit">
+                                Tạo mới
                             </Button>
                         </ValidatorForm>
                     </Box>
@@ -335,16 +310,16 @@ function UserFactoryDetails() {
                 <Fade in={openModalEdit}>
                     <Box sx={styleModal}>
                         <Typography id="transition-modal-title" variant="h6" component="h2">
-                            Edit User Admin
+                            Sửa thông tin tài khoản
                         </Typography>
                         <ValidatorForm onSubmit={handleEditUser}>
                             <TextValidator
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={name}
-                                label="Name"
+                                label="Tên"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập tên người dùng']}
                                 onChange={(e) => setName(e.target.value)}
@@ -355,7 +330,7 @@ function UserFactoryDetails() {
                                 value={email}
                                 label="Email"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required', 'isEmail']}
                                 errorMessages={['Vui lòng nhập email', 'Email không hợp lệ']}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -366,7 +341,7 @@ function UserFactoryDetails() {
                                 value={sdt}
                                 label="SDT"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập số điện thoại']}
                                 onChange={(e) => setSdt(e.target.value)}
@@ -375,20 +350,14 @@ function UserFactoryDetails() {
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={address}
-                                label="Address"
+                                label="Địa chỉ"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập địa chỉ']}
                                 onChange={(e) => setAddress(e.target.value)}
                             />
-                            <Button
-                                sx={{ marginTop: '10px' }}
-                                variant="contained"
-                                startIcon={<SendIcon />}
-                                fullWidth
-                                type="submit"
-                            >
+                            <Button sx={{ marginTop: '10px' }} variant="contained" fullWidth type="submit">
                                 Chỉnh sửa
                             </Button>
                         </ValidatorForm>
@@ -410,7 +379,7 @@ function UserFactoryDetails() {
                 <Fade in={openModalDelete}>
                     <Box sx={styleModal}>
                         <Typography sx={{ color: '#666' }} variant="h6" component="h2">
-                            Delete User ?
+                            Bạn có chắc chắn muốn xóa tài khoản này không?
                         </Typography>
                         <Box
                             sx={{
@@ -421,7 +390,7 @@ function UserFactoryDetails() {
                             }}
                         >
                             <Button variant="contained" onClick={() => setOpenModalDelete(false)}>
-                                Close
+                                Không
                             </Button>
                             <Button
                                 variant="contained"
@@ -429,7 +398,7 @@ function UserFactoryDetails() {
                                 sx={{ marginLeft: '10px' }}
                                 onClick={handleDeleteUser}
                             >
-                                Delete
+                                Xóa
                             </Button>
                         </Box>
                     </Box>

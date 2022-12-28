@@ -1,10 +1,10 @@
-import AdminPage from '~/pages/AdminPage';
 import AdminAgency from '~/pages/AdminPage/AdminAgency';
 import AgencyDetails from '~/pages/AdminPage/AdminAgency/AdminAgencyDetails';
 import AdminFactory from '~/pages/AdminPage/AdminFactory';
 import FactoryDetails from '~/pages/AdminPage/AdminFactory/AdminFactoryDetails';
 import AdminGuarantee from '~/pages/AdminPage/AdminGuarantee';
-import Products from '~/pages/AdminPage/AdminProduct';
+import GuaranteeDetails from '~/pages/AdminPage/AdminGuarantee/AdminGuaranteeDetails';
+import AdminProduct from '~/pages/AdminPage/AdminProduct';
 import AdminUser from '~/pages/AdminPage/AdminUser';
 import UserAdminDetails from '~/pages/AdminPage/AdminUser/UserAdminPage';
 import UserAgencyDetails from '~/pages/AdminPage/AdminUser/UserAgencyPage';
@@ -14,7 +14,6 @@ import AgencyPage from '~/pages/AgencyPage';
 import AgencyDelivery from '~/pages/AgencyPage/AgencyDelivery';
 import AgencyGuarantee from '~/pages/AgencyPage/AgencyGuarantee';
 import AgencyImport from '~/pages/AgencyPage/AgencyImport';
-import AgencyProduct from '~/pages/AgencyPage/AgencyProduct';
 import AgencySold from '~/pages/AgencyPage/AgencySold';
 import AgencyStorage from '~/pages/AgencyPage/AgencyStorage';
 import FactoryPage from '~/pages/FactoryPage';
@@ -39,8 +38,8 @@ const publicRoutes = [
 const privateAdminRoutes = [
     // Admin page
     {
-        path: '/Admin',
-        component: AdminPage,
+        path: '/',
+        component: AdminProduct,
     },
     {
         path: '/Admin/user',
@@ -58,6 +57,7 @@ const privateAdminRoutes = [
         path: '/Admin/guaranteeUsers',
         component: UserGuaranteeDetails,
     },
+
     {
         path: '/Admin/factoryUsers',
         component: UserFactoryDetails,
@@ -83,8 +83,12 @@ const privateAdminRoutes = [
         component: AdminGuarantee,
     },
     {
+        path: '/Admin/guarantee/:id',
+        component: GuaranteeDetails,
+    },
+    {
         path: '/Admin/products',
-        component: Products,
+        component: AdminProduct,
     },
 ];
 
@@ -95,6 +99,10 @@ const privateFactoryRoutes = [
     },
     {
         path: '/Factory/storage',
+        component: FactoryStorage,
+    },
+    {
+        path: '/',
         component: FactoryStorage,
     },
     {
@@ -121,8 +129,8 @@ const privateAgencyRoutes = [
         component: AgencyPage,
     },
     {
-        path: '/Agency/product',
-        component: AgencyProduct,
+        path: '/',
+        component: AgencyStorage,
     },
     {
         path: '/Agency/storage',
@@ -153,6 +161,10 @@ const privateGuaranteeRoutes = [
     },
     {
         path: '/Guarantee/delivery',
+        component: GuaranteeDelivery,
+    },
+    {
+        path: '/',
         component: GuaranteeDelivery,
     },
     {

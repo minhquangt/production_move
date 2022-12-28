@@ -1,12 +1,7 @@
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Box } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
-import agencyLogo from '~/assets/image/agencylogo.jpg';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosClient from '~/api/axiosClient';
 
 function AdminAgency() {
@@ -31,41 +26,44 @@ function AdminAgency() {
                 <Box
                     id="style-2"
                     sx={{
-                        backgroundColor: '#fff',
-                        width: 'calc(100% - var(--default-layout-width-sidebar))',
-                        height: 'calc(100vh - var(--default-layout-height-header))',
-                        float: 'right',
+                        backgroundcolor: '#fff',
                         overflowY: 'scroll',
                     }}
                 >
                     <Box sx={{ display: 'flex', justifyContent: 'center', margin: '40px 0' }}>
-                        {agencies.map((agency) => {
-                            return (
-                                <>
-                                    <Card
-                                        key={agency._id}
-                                        sx={{ maxWidth: 345, margin: '0 20px' }}
-                                        onClick={() => {
-                                            navigate(`/admin/agency/${agency._id}`);
-                                        }}
-                                    >
-                                        <CardActionArea>
-                                            <CardMedia component="img" height="250" image={agencyLogo} alt="Image" />
-                                            <CardContent>
-                                                <Typography
-                                                    sx={{ textAlign: 'center', fontSize: '1.2rem' }}
-                                                    gutterBottom
-                                                    variant="h4"
-                                                    component="div"
+                        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+                            <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">STT</TableCell>
+                                        <TableCell align="center">Tên Đại Lý</TableCell>
+                                        <TableCell align="center">Xem chi tiết</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {agencies.map((agency, index) => (
+                                        <TableRow
+                                            id={agency._id}
+                                            className="row"
+                                            key={agency._id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="center">{index + 1}</TableCell>
+                                            <TableCell align="center">{agency.name}</TableCell>
+                                            <TableCell align="center">
+                                                <Button
+                                                    variant="contained"
+                                                    color="info"
+                                                    onClick={() => navigate(`/admin/agency/${agency._id}`)}
                                                 >
-                                                    {agency.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </>
-                            );
-                        })}
+                                                    Xem chi tiết
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Box>
                 </Box>
             </>

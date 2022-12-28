@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/user', userRouter); //Done
-app.use('/product', productRouter); // Done except getAllProductsFactory
-app.use('/factory', factoryRouter);
+app.use('/product', productRouter); // Done
+app.use('/factory', factoryRouter); //Done
 app.use('/agency', agencyRouter);
 app.use('/delivery', deliveryRouter);
 app.use('/guarantee', guaranteeRouter);

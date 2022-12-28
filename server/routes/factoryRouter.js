@@ -8,7 +8,7 @@ router.get(
     guaranteeOrderCtrl.getGuaranteeOrderByIdFactory
 );
 router.post('/updateAmount', factoryCtrl.updateAmount);
-router.get('/:id', factoryCtrl.getFactoryById);
-router.get('/', factoryCtrl.getAllFactories);
+router.get('/:id', factoryCtrl.getFactoryById); // done
+router.get('/', factoryCtrl.getAllFactories); // done
 
 module.exports = router;

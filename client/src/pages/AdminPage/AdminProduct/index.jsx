@@ -1,25 +1,18 @@
-import './Product.scss';
+import { Box, Button, Typography } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, Button } from '@mui/material';
-import { Typography } from '@mui/material';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import SendIcon from '@mui/icons-material/Send';
-import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
-
 import { useEffect, useState } from 'react';
-
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import axiosClient from '~/api/axiosClient';
+import './Product.scss';
 
 const styleModal = {
     position: 'absolute',
@@ -105,6 +98,7 @@ function AdminProduct() {
             const res = await axiosClient.post('/product/delete', {
                 id,
             });
+            console.log(res.data);
             if (res.data.delete) {
                 window.location.reload();
                 alert(res.data.msg);
@@ -124,21 +118,13 @@ function AdminProduct() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
                     overflowY: 'scroll',
                 }}
             >
-                <Typography variant="h4" sx={{ margin: '10px', color: '#666' }}>
-                    Products
-                </Typography>
-
-                {/* btn new user */}
                 <Button
-                    variant="outlined"
-                    color="secondary"
+                    color="primary"
+                    variant="contained"
                     sx={{ margin: '10px' }}
                     onClick={() => {
                         setName('');
@@ -149,21 +135,18 @@ function AdminProduct() {
                         setOpenModalCreate(true);
                     }}
                 >
-                    <AddCircleOutlineOutlinedIcon sx={{ marginRight: '5px' }} />
-                    New
+                    Tạo mới
                 </Button>
 
                 <TableContainer sx={{ marginBottom: '40px' }} component={Paper}>
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
-                                <TableCell>Code</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Price</TableCell>
-                                {/* <TableCell>Password</TableCell> */}
-                                <TableCell align="center">Chỉnh sửa</TableCell>
-                                <TableCell align="center">Xóa</TableCell>
+                                <TableCell align="center">STT</TableCell>
+                                <TableCell align="center">Code</TableCell>
+                                <TableCell align="center">Tên sản phẩm</TableCell>
+                                <TableCell align="center">Giá</TableCell>
+                                <TableCell align="center">Hành động</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -174,40 +157,38 @@ function AdminProduct() {
                                     key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell align="center">{index + 1}</TableCell>
                                     <TableCell component="th" scope="row" sortDirection="desc">
                                         {row.code}
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{PriceVND(row.price)}</TableCell>
-                                    <TableCell
-                                        align="center"
-                                        onClick={() => {
-                                            setOpenModalEdit(true);
-                                            setId(row._id);
-                                            setName(row.name);
-                                            setCode(row.code);
-                                            setDescription(row.description);
-                                            setImage(row.image);
-                                            setPrice(row.price);
-                                        }}
-                                    >
-                                        <Button variant="text">
-                                            <EditOutlinedIcon />
-                                            Edit
-                                        </Button>
-                                    </TableCell>
+                                    <TableCell align="center">{row.name}</TableCell>
+                                    <TableCell align="center">{PriceVND(row.price)}</TableCell>
                                     <TableCell align="center">
                                         <Button
-                                            variant="text"
+                                            variant="contained"
+                                            color="warning"
+                                            sx={{ marginRight: '10px' }}
+                                            onClick={() => {
+                                                setOpenModalEdit(true);
+                                                setId(row._id);
+                                                setName(row.name);
+                                                setCode(row.code);
+                                                setDescription(row.description);
+                                                setImage(row.image);
+                                                setPrice(row.price);
+                                            }}
+                                        >
+                                            Sửa
+                                        </Button>
+                                        <Button
+                                            variant="contained"
                                             color="error"
                                             onClick={() => {
                                                 setOpenModalDelete(true);
                                                 setId(row._id);
                                             }}
                                         >
-                                            <DeleteSweepOutlinedIcon />
-                                            Delete
+                                            Xóa
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -231,7 +212,7 @@ function AdminProduct() {
                 <Fade in={openModalCreate}>
                     <Box sx={styleModal}>
                         <Typography id="transition-modal-title" variant="h6" component="h2">
-                            New product
+                            Thêm sản phẩm mới
                         </Typography>
                         <ValidatorForm onSubmit={handleCreate}>
                             <TextValidator
@@ -240,7 +221,7 @@ function AdminProduct() {
                                 value={code}
                                 label="Mã sản phẩm"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập mã sản phẩm']}
                                 onChange={(e) => setCode(e.target.value)}
@@ -251,7 +232,7 @@ function AdminProduct() {
                                 value={name}
                                 label="Tên sản phẩm"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập tên sản phẩm']}
                                 onChange={(e) => setName(e.target.value)}
@@ -261,9 +242,9 @@ function AdminProduct() {
                                 fullWidth
                                 value={price}
                                 type="number"
-                                label="Giá sản phẩm"
+                                label="Giá"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập giá sản phẩm']}
                                 onChange={(e) => setPrice(e.target.value)}
@@ -274,7 +255,7 @@ function AdminProduct() {
                                 value={description}
                                 label="Mô tả"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập mô tả']}
                                 onChange={(e) => setDescription(e.target.value)}
@@ -283,20 +264,14 @@ function AdminProduct() {
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={image}
-                                label="Link image"
+                                label="Link ảnh"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập địa chỉ ảnh']}
                                 onChange={(e) => setImage(e.target.value)}
                             />
-                            <Button
-                                sx={{ marginTop: '10px' }}
-                                variant="contained"
-                                startIcon={<SendIcon />}
-                                fullWidth
-                                type="submit"
-                            >
+                            <Button sx={{ marginTop: '10px' }} variant="contained" fullWidth type="submit">
                                 Tạo mới
                             </Button>
                         </ValidatorForm>
@@ -318,7 +293,7 @@ function AdminProduct() {
                 <Fade in={openModalEdit}>
                     <Box sx={styleModal}>
                         <Typography id="transition-modal-title" variant="h6" component="h2">
-                            Edit Product
+                            Sửa thông tin sản phẩm
                         </Typography>
                         <ValidatorForm onSubmit={handleEdit}>
                             <TextValidator
@@ -327,7 +302,7 @@ function AdminProduct() {
                                 value={code}
                                 label="Mã sản phẩm"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập mã sản phẩm']}
                                 onChange={(e) => setCode(e.target.value)}
@@ -338,7 +313,7 @@ function AdminProduct() {
                                 value={name}
                                 label="Tên sản phẩm"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập tên sản phẩm']}
                                 onChange={(e) => setName(e.target.value)}
@@ -350,7 +325,7 @@ function AdminProduct() {
                                 type="number"
                                 label="Giá sản phẩm"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập giá sản phẩm']}
                                 onChange={(e) => setPrice(e.target.value)}
@@ -361,7 +336,7 @@ function AdminProduct() {
                                 value={description}
                                 label="Mô tả"
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
                                 errorMessages={['Vui lòng nhập mô tả']}
                                 onChange={(e) => setDescription(e.target.value)}
@@ -370,20 +345,14 @@ function AdminProduct() {
                                 sx={{ marginTop: '10px' }}
                                 fullWidth
                                 value={image}
-                                label="Link image"
+                                label="Link ảnh "
                                 variant="standard"
-                                color="secondary"
+                                color="primary"
                                 validators={['required']}
-                                errorMessages={['Vui lòng nhập địa chỉ ảnh']}
+                                errorMessages={['Vui lòng nhập link ảnh']}
                                 onChange={(e) => setImage(e.target.value)}
                             />
-                            <Button
-                                sx={{ marginTop: '10px' }}
-                                variant="contained"
-                                startIcon={<SendIcon />}
-                                fullWidth
-                                type="submit"
-                            >
+                            <Button sx={{ marginTop: '10px' }} variant="contained" fullWidth type="submit">
                                 Chỉnh sửa
                             </Button>
                         </ValidatorForm>
@@ -405,7 +374,7 @@ function AdminProduct() {
                 <Fade in={openModalDelete}>
                     <Box sx={styleModal}>
                         <Typography sx={{ color: '#666' }} variant="h6" component="h2">
-                            Delete Product ?
+                            Bạn có chắc muốn xóa sản phẩm này không?
                         </Typography>
                         <Box
                             sx={{
@@ -416,7 +385,7 @@ function AdminProduct() {
                             }}
                         >
                             <Button variant="contained" onClick={() => setOpenModalDelete(false)}>
-                                Close
+                                Không
                             </Button>
                             <Button
                                 variant="contained"
@@ -424,7 +393,7 @@ function AdminProduct() {
                                 sx={{ marginLeft: '10px' }}
                                 onClick={handleDelete}
                             >
-                                Delete
+                                Có
                             </Button>
                         </Box>
                     </Box>

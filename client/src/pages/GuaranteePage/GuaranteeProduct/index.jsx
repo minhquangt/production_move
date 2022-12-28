@@ -1,19 +1,15 @@
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
-
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import axiosClient from '~/api/axiosClient';
 
 const styleModal = {
@@ -30,7 +26,6 @@ const styleModal = {
 
 function GuaranteeProduct() {
     const [rows, setRows] = useState([]);
-    const navigate = useNavigate();
     const [listProducts, setListProducts] = useState([]);
     const [listFactories, setListFactories] = useState([]);
 
@@ -124,28 +119,20 @@ function GuaranteeProduct() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Button onClick={() => navigate('/guarantee')} variant="outlined" sx={{ margin: '10px' }}>
-                    <KeyboardArrowLeftOutlinedIcon />
-                    Quay lại
-                </Button>
-
                 <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
                     <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
-                                <TableCell>Mã đơn hàng</TableCell>
-                                <TableCell>Tên sản phẩm</TableCell>
-                                <TableCell>Lỗi</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
+                                <TableCell align="center">STT</TableCell>
+                                <TableCell align="center">Mã đơn hàng</TableCell>
+                                <TableCell align="center">Tên sản phẩm</TableCell>
+                                <TableCell align="center">Lỗi</TableCell>
+                                <TableCell align="center">Hành động</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -156,32 +143,33 @@ function GuaranteeProduct() {
                                     key={row._id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sx={{ maxWidth: '200px' }}>
+                                    <TableCell align="center">{index + 1}</TableCell>
+                                    <TableCell align="center" component="th" scope="row" sx={{ maxWidth: '200px' }}>
                                         {row.idOrder}
                                     </TableCell>
-                                    <TableCell sx={{ maxWidth: '200px' }}>{getNameProduct(row.idOrder)}</TableCell>
-                                    <TableCell>{row.error}</TableCell>
-                                    <TableCell>
+                                    <TableCell align="center" sx={{ maxWidth: '200px' }}>
+                                        {getNameProduct(row.idOrder)}
+                                    </TableCell>
+                                    <TableCell align="center">{row.error}</TableCell>
+                                    <TableCell align="center">
                                         <Button
                                             onClick={() => {
                                                 setIdGuaranteeOrder(row._id);
                                                 setOpenModalCustomer(true);
                                             }}
-                                            variant="outlined"
-                                            color="secondary"
+                                            variant="contained"
+                                            color="success"
+                                            sx={{ mr: 2 }}
                                         >
                                             Chuyển đại lý
                                         </Button>
-                                    </TableCell>
-                                    <TableCell>
                                         <Button
                                             onClick={() => {
                                                 setIdGuaranteeOrder(row._id);
                                                 setOpenModalFactory(true);
                                             }}
-                                            variant="outlined"
-                                            color="primary"
+                                            variant="contained"
+                                            color="warning"
                                         >
                                             Chuyển kho sản xuất
                                         </Button>
@@ -218,7 +206,7 @@ function GuaranteeProduct() {
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                             <Button
                                 sx={{ marginTop: '10px' }}
-                                color="secondary"
+                                color="error"
                                 variant="contained"
                                 type="submit"
                                 onClick={() => setOpenModalCustomer(false)}
@@ -228,6 +216,7 @@ function GuaranteeProduct() {
                             <Button
                                 sx={{ marginTop: '10px', marginLeft: '10px' }}
                                 variant="contained"
+                                color="success"
                                 type="submit"
                                 onClick={handleDeliveryAgency}
                             >
@@ -284,7 +273,7 @@ function GuaranteeProduct() {
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                             <Button
                                 sx={{ marginTop: '10px' }}
-                                color="secondary"
+                                color="error"
                                 variant="contained"
                                 type="submit"
                                 onClick={() => setOpenModalFactory(false)}
@@ -294,6 +283,7 @@ function GuaranteeProduct() {
                             <Button
                                 sx={{ marginTop: '10px', marginLeft: '10px' }}
                                 variant="contained"
+                                color="success"
                                 type="submit"
                                 onClick={handleDeliveryFactory}
                             >

@@ -1,19 +1,17 @@
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
 import axiosClient from '~/api/axiosClient';
 
 const styleModal = {
@@ -40,9 +38,6 @@ function FactoryExport() {
     const [idAgencyExport, setIdAgencyExport] = useState('');
     const [idProduct, setIdProduct] = useState('');
     const [amountExport, setAmountExport] = useState(0);
-    const [description, setDescription] = useState('');
-
-    const navigate = useNavigate();
 
     const getAmount = (id) => {
         var result = storage.find((product) => {
@@ -93,7 +88,6 @@ function FactoryExport() {
                 nameTo: agencyName.name,
                 idProduct: idProduct,
                 amount: amountExport,
-                description: description,
                 status: 'Đang giao hàng',
             });
             if (res2.data.create) {
@@ -110,27 +104,20 @@ function FactoryExport() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Button onClick={() => navigate('/factory')} variant="outlined" sx={{ margin: '10px 20px' }}>
-                    <KeyboardArrowLeftOutlinedIcon />
-                    Quay lại
-                </Button>
-
                 <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
-                                <TableCell>Mã Sản Phẩm</TableCell>
-                                <TableCell>Tên sản phẩm</TableCell>
-                                <TableCell>Số lượng</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell align="center">STT</TableCell>
+                                <TableCell align="center">Mã Sản Phẩm</TableCell>
+                                <TableCell align="center">Tên sản phẩm</TableCell>
+                                <TableCell align="center">Số lượng</TableCell>
+                                <TableCell align="center"></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -141,16 +128,16 @@ function FactoryExport() {
                                     key={row._id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sortDirection="desc">
+                                    <TableCell align="center">{index + 1}</TableCell>
+                                    <TableCell align="center" component="th" scope="row" sortDirection="desc">
                                         {row.code}
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{getAmount(row._id)}</TableCell>
-                                    <TableCell>
+                                    <TableCell align="center">{row.name}</TableCell>
+                                    <TableCell align="center">{getAmount(row._id)}</TableCell>
+                                    <TableCell align="center">
                                         <Button
-                                            variant="outlined"
-                                            color="secondary"
+                                            variant="contained"
+                                            color="primary"
                                             onClick={() => {
                                                 setOpenModal(true);
                                                 setIdProduct(row._id);
@@ -203,23 +190,21 @@ function FactoryExport() {
                                 })}
                             </Select>
                         </FormControl>
-                        <FormControl fullWidth sx={{ margin: '15px 0' }}>
-                            <InputLabel id="demo-simple-select-label">Mã sản phẩm</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={idProduct}
-                                label="Mã sản phẩm"
-                                onChange={(e) => {
-                                    console.log(e.target.value);
-                                    setIdProduct(e.target.value);
-                                }}
-                            >
-                                {rows.map((row) => {
-                                    return <MenuItem value={row._id}>{row.code}</MenuItem>;
-                                })}
-                            </Select>
-                        </FormControl>
+                        {rows.map((row) =>
+                            row._id === idProduct ? (
+                                <TextField
+                                    sx={{ margin: '15px 0' }}
+                                    label="Mã sản phẩm"
+                                    variant="standard"
+                                    fullWidth
+                                    type="text"
+                                    value={row.code}
+                                    disabled={true}
+                                />
+                            ) : (
+                                <></>
+                            ),
+                        )}
                         <TextField
                             sx={{ margin: '15px 0' }}
                             label="Số lượng"
@@ -228,15 +213,6 @@ function FactoryExport() {
                             type="number"
                             value={amountExport}
                             onChange={(e) => setAmountExport(e.target.value)}
-                        />
-                        <TextField
-                            sx={{ margin: '15px 0' }}
-                            label="Ghi chú"
-                            variant="standard"
-                            fullWidth
-                            type="text"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
                         />
                         <Button
                             sx={{ marginTop: '10px' }}

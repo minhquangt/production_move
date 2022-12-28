@@ -1,66 +1,58 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Container } from '@mui/material';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.scss';
+import HeaderAdmin from './components/Admin/components/HeaderAdmin';
+import HeaderAgency from './components/Agency/components/HeaderAgency';
+import HeadeFactory from './components/Factory/components/HeadeFactory';
+import HeaderGuarantee from './components/Guarantee/components/HeaderGuarantee';
 import {
-    publicRoutes,
     privateAdminRoutes,
     privateAgencyRoutes,
-    privateGuaranteeRoutes,
     privateFactoryRoutes,
+    privateGuaranteeRoutes,
+    publicRoutes,
 } from './routes';
-import './App.css';
-import SideBarAdmin from './components/Admin/components/SideBar';
-import TopBarAdmin from './components/Admin/components/TopBar';
-import SideBarFactory from './components/Factory/components/SideBar';
-import TopBarFactory from './components/Factory/components/TopBar';
-import SideBarAgency from './components/Agency/components/SideBar';
-import TopBarAgency from './components/Agency/components/TopBar';
-import SideBarGuarantee from './components/Guarantee/components/SideBar';
-import TopBarGuarantee from '~/components/Guarantee/components/TopBar';
-
 
 function App() {
     return (
         <Router>
             <div className="App">
                 {localStorage.getItem('role') === 'admin' ? (
-                    <>
-                        <SideBarAdmin />
-                        <TopBarAdmin />
+                    <Container sx={{ marginTop: '70px' }}>
+                        <HeaderAdmin />
                         <Routes>
                             {privateAdminRoutes.map((route, i) => {
                                 return <Route key={i} path={route.path} element={<route.component />} />;
                             })}
                         </Routes>
-                    </>
+                    </Container>
                 ) : localStorage.getItem('role') === 'agency' ? (
-                    <>
-                        <SideBarAgency />
-                        <TopBarAgency />
+                    <Container sx={{ marginTop: '70px' }}>
+                        <HeaderAgency />
                         <Routes>
                             {privateAgencyRoutes.map((route, i) => {
                                 return <Route key={i} path={route.path} element={<route.component />} />;
                             })}
                         </Routes>
-                    </>
+                    </Container>
                 ) : localStorage.getItem('role') === 'guarantee' ? (
-                    <>
-                        <SideBarGuarantee />
-                        <TopBarGuarantee />
+                    <Container sx={{ marginTop: '70px' }}>
+                        <HeaderGuarantee />
                         <Routes>
                             {privateGuaranteeRoutes.map((route, i) => {
                                 return <Route key={i} path={route.path} element={<route.component />} />;
                             })}
                         </Routes>
-                    </>
+                    </Container>
                 ) : localStorage.getItem('role') === 'factory' ? (
-                    <>
-                        <SideBarFactory />
-                        <TopBarFactory />
+                    <Container sx={{ marginTop: '70px' }}>
+                        <HeadeFactory />
                         <Routes>
                             {privateFactoryRoutes.map((route, i) => {
                                 return <Route key={i} path={route.path} element={<route.component />} />;
                             })}
                         </Routes>
-                    </>
+                    </Container>
                 ) : (
                     <Routes>
                         {publicRoutes.map((route, i) => {

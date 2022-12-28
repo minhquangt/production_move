@@ -4,7 +4,7 @@ const agencyCtrl = require('../controllers/agencyCtrl');
 const orderCtrl = require('../controllers/orderCtrl');
 const guaranteeOrderCtrl = require('../controllers/guaranteeOrderCtrl');
 
-router.post('/updateAmount', agencyCtrl.updateAmount);
+router.post('/updateAmount', agencyCtrl.updateAmount); // done
 router.get('/order/:id', orderCtrl.getOderFromIdAgency);
 router.post('/createOder/', orderCtrl.createOder);
 router.post('/createGuaranteeOrder/', guaranteeOrderCtrl.createGuaranteeOrder);
@@ -16,7 +16,7 @@ router.get(
     '/guaranteeOrder/:id',
     guaranteeOrderCtrl.getGuaranteeOrderByIdAgency
 );
-router.get('/', agencyCtrl.getAllAgencies);
-router.get('/:id', agencyCtrl.getAgencyById);
+router.get('/', agencyCtrl.getAllAgencies); // done
+router.get('/:id', agencyCtrl.getAgencyById); // done
 
 module.exports = router;

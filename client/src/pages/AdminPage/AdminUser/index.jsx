@@ -1,14 +1,13 @@
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
-import adminImage from '~/assets/image/admin.jpg';
-import agencyImage from '~/assets/image/agency.jpg';
-import factoryImage from '~/assets/image/factory.png';
-import guaranteeImage from '~/assets/image/guarantee.png';
+
+const users = [
+    { name: 'Tài Khoản Admin', link: '/admin/adminUsers' },
+    { name: 'Tài Khoản Kho sản xuất', link: '/admin/factoryUsers' },
+    { name: 'Tài Khoản Đại lý', link: '/admin/agencyUsers' },
+    { name: 'Tài Khoản Bảo Hành', link: '/admin/guaranteeUsers' },
+];
 
 function AdminUser() {
     const navigate = useNavigate();
@@ -18,99 +17,44 @@ function AdminUser() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
                     overflowY: 'scroll',
                 }}
             >
                 <Box sx={{ display: 'flex', justifyContent: 'center', margin: '40px 0' }}>
-                    <Card
-                        sx={{ maxWidth: 345, margin: '0 20px' }}
-                        onClick={() => {
-                            navigate('/admin/adminUsers');
-                        }}
-                    >
-                        <CardActionArea>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={adminImage}
-                                alt="Image"
-                                backgroundColor="black"
-                            />
-                            <CardContent>
-                                <Typography sx={{ textAlign: 'center', fontSize: '1rem' }} gutterBottom variant="h7" component="div">
-                                    Tài Khoản Admin
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                    <Card
-                        sx={{ maxWidth: 345, margin: '0 20px' }}
-                        onClick={() => {
-                            navigate('/admin/factoryUsers');
-                        }}
-                    >
-                        <CardActionArea>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={factoryImage}
-                                alt="Image"
-                                backgroundColor="black"
-                            />
-                            <CardContent>
-                                <Typography sx={{ textAlign: 'center', fontSize: '1rem' }} gutterBottom variant="h7" component="div">
-                                    Tài Khoản Kho sản xuất
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                    <Card
-                        sx={{ maxWidth: 345, margin: '0 20px' }}
-                        onClick={() => {
-                            navigate('/admin/agencyUsers');
-                        }}
-                    >
-                        <CardActionArea>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={agencyImage}
-                                alt="Image"
-                                backgroundColor="black"
-                            />
-                            <CardContent>
-                                <Typography sx={{ textAlign: 'center', fontSize: '1rem' }} gutterBottom variant="h7" component="div">
-                                    Tài Khoản Đại lý
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                    <Card
-                        sx={{ maxWidth: 345, margin: '0 20px' }}
-                        onClick={() => {
-                            navigate('/admin/guaranteeUsers');
-                        }}
-                    >
-                        <CardActionArea>
-                            <CardMedia
-                                component="img"
-                                height="200"
-                                image={guaranteeImage}
-                                alt="Image"
-                                backgroundColor="black"
-                            />
-                            <CardContent>
-                                <Typography sx={{ textAlign: 'center', fontSize: '1rem' }} gutterBottom variant="h7" component="div">
-                                    Tài Khoản Bảo Hành
-                                </Typography>
-                            </CardContent>
-                            
-                        </CardActionArea>
-                    </Card>
+                    <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+                        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">STT</TableCell>
+                                    <TableCell align="center">Tên Đại Lý</TableCell>
+                                    <TableCell align="center">Xem chi tiết</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {users.map((user, index) => (
+                                    <TableRow
+                                        id={index}
+                                        className="row"
+                                        key={index}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell align="center">{index + 1}</TableCell>
+                                        <TableCell align="center">{user.name}</TableCell>
+                                        <TableCell align="center">
+                                            <Button
+                                                variant="contained"
+                                                color="info"
+                                                onClick={() => navigate(user.link)}
+                                            >
+                                                Xem chi tiết
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </Box>
             </Box>
         </>

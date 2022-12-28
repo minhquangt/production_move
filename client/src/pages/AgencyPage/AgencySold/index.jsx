@@ -1,19 +1,17 @@
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
 import axiosClient from '~/api/axiosClient';
 
 const styleModal = {
@@ -30,7 +28,6 @@ const styleModal = {
 
 function AgencySold() {
     const [rows, setRows] = useState([]);
-    const navigate = useNavigate();
     const [listProducts, setListProducts] = useState([]);
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
@@ -49,7 +46,6 @@ function AgencySold() {
         const getData = async () => {
             try {
                 const res = await axiosClient.get(`/agency/order/${localStorage.getItem('idPage')}`);
-                // console.log(res.data);
                 setRows(res.data.orders);
                 setNameAgency(res.data.nameAgency);
                 setListProducts(res.data.products);
@@ -130,36 +126,29 @@ function AgencySold() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Button onClick={() => navigate('/agency')} variant="outlined" sx={{ margin: '10px' }}>
-                    <KeyboardArrowLeftOutlinedIcon />
-                    Quay lại
-                </Button>
-
                 <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
                     <Button
                         sx={{ marginLeft: '10px' }}
                         onClick={() => setOpenModalCreate(true)}
-                        variant="outlined"
-                        color="secondary"
+                        variant="contained"
+                        color="primary"
                     >
                         Tạo hóa đơn
                     </Button>
                     <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
-                                <TableCell>Tên sản phẩm</TableCell>
-                                <TableCell>ID khách hàng</TableCell>
-                                <TableCell>Giá</TableCell>
-                                <TableCell>Thời gian</TableCell>
-                                <TableCell>Bảo hành</TableCell>
+                                <TableCell align="center">STT</TableCell>
+                                <TableCell align="center">Tên sản phẩm</TableCell>
+                                <TableCell align="center">ID khách hàng</TableCell>
+                                <TableCell align="center">Giá</TableCell>
+                                <TableCell align="center">Thời gian</TableCell>
+                                <TableCell align="center">Bảo hành</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -170,14 +159,14 @@ function AgencySold() {
                                     key={row._id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sortDirection="desc">
+                                    <TableCell align="center">{index + 1}</TableCell>
+                                    <TableCell align="center" component="th" scope="row" sortDirection="desc">
                                         {row.nameProduct}
                                     </TableCell>
-                                    <TableCell>{row.idCustomer}</TableCell>
-                                    <TableCell>{PriceVND(row.price)}</TableCell>
-                                    <TableCell>{getDate(row.createdAt)}</TableCell>
-                                    <TableCell>
+                                    <TableCell align="center">{row.idCustomer}</TableCell>
+                                    <TableCell align="center">{PriceVND(row.price)}</TableCell>
+                                    <TableCell align="center">{getDate(row.createdAt)}</TableCell>
+                                    <TableCell align="center">
                                         {compareDate(row.createdAt) > 365 ? (
                                             <Button onClick={() => {}} variant="outlined" disabled color="secondary">
                                                 Hết bảo hành
@@ -190,21 +179,13 @@ function AgencySold() {
                                                             setIdOrder(row._id);
                                                             setOpenModalGuarantee(true);
                                                         }}
-                                                        variant="outlined"
+                                                        variant="contained"
                                                         color="primary"
                                                     >
                                                         Bảo hành
                                                     </Button>
                                                 ) : (
-                                                    <Button
-                                                        onClick={() => {}}
-                                                        sx={{
-                                                            color: 'red !important',
-                                                            border: '1px solid red !important',
-                                                        }}
-                                                        disabled
-                                                        variant="outlined"
-                                                    >
+                                                    <Button onClick={() => {}} disabled variant="contained">
                                                         Đang bảo hành
                                                     </Button>
                                                 )}
@@ -241,6 +222,7 @@ function AgencySold() {
                             fullWidth
                             type="text"
                             value={nameAgency}
+                            disabled={true}
                         />
                         <TextField
                             sx={{ margin: '10px 0' }}
@@ -277,8 +259,9 @@ function AgencySold() {
                                 value={codeProduct}
                                 label="Mã sản phẩm"
                                 onChange={(e) => {
-                                    console.log(e.target.value);
                                     setCodeProduct(e.target.value);
+                                    const pdt = listProducts.find((p) => p._id === e.target.value);
+                                    setPrice(pdt.price);
                                 }}
                             >
                                 {listProducts.map((product) => {
@@ -297,7 +280,7 @@ function AgencySold() {
                             fullWidth
                             type="number"
                             value={price}
-                            onChange={(e) => setPrice(e.target.value)}
+                            disabled={true}
                         />
 
                         <Button
@@ -347,7 +330,7 @@ function AgencySold() {
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
                             <Button
                                 sx={{ marginTop: '10px' }}
-                                color="secondary"
+                                color="error"
                                 variant="contained"
                                 type="submit"
                                 onClick={() => setOpenModalGuarantee(false)}

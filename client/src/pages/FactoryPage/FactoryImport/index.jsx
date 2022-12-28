@@ -1,19 +1,15 @@
+import { Box, Button, TextField, Typography } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
-
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import axiosClient from '~/api/axiosClient';
 
 const styleModal = {
@@ -35,8 +31,6 @@ function FactoryImport() {
 
     const [idProduct, setIdProduct] = useState('');
     const [amountImport, setAmountImport] = useState(0);
-
-    const navigate = useNavigate();
 
     const getAmount = (id) => {
         var result = storage.find((item) => {
@@ -83,47 +77,40 @@ function FactoryImport() {
             <Box
                 id="style-2"
                 sx={{
-                    backgroundColor: '#fff',
-                    width: 'calc(100% - var(--default-layout-width-sidebar))',
-                    height: 'calc(100vh - var(--default-layout-height-header))',
-                    float: 'right',
+                    backgroundcolor: '#fff',
+
                     overflowY: 'scroll',
                 }}
             >
-                <Button onClick={() => navigate('/factory')} variant="outlined" sx={{ margin: '10px 20px' }}>
-                    <KeyboardArrowLeftOutlinedIcon />
-                    Quay lại
-                </Button>
-
                 <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>STT</TableCell>
-                                <TableCell>Mã Sản Phẩm</TableCell>
-                                <TableCell>Tên sản phẩm</TableCell>
-                                <TableCell>Số lượng</TableCell>
-                                <TableCell></TableCell>
+                                <TableCell align="center">STT</TableCell>
+                                <TableCell align="center">Mã Sản Phẩm</TableCell>
+                                <TableCell align="center">Tên sản phẩm</TableCell>
+                                <TableCell align="center">Số lượng</TableCell>
+                                <TableCell align="center"></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row, index) => (
+                            {rows?.map((row, index) => (
                                 <TableRow
                                     id={row._id}
                                     className="row"
                                     key={row._id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sortDirection="desc">
+                                    <TableCell align="center">{index + 1}</TableCell>
+                                    <TableCell align="center" component="th" scope="row" sortDirection="desc">
                                         {row.code}
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{getAmount(row._id)}</TableCell>
-                                    <TableCell>
+                                    <TableCell align="center">{row.name}</TableCell>
+                                    <TableCell align="center">{getAmount(row._id)}</TableCell>
+                                    <TableCell align="center">
                                         <Button
-                                            variant="outlined"
-                                            color="secondary"
+                                            variant="contained"
+                                            color="primary"
                                             onClick={() => {
                                                 setOpenModal(true);
                                                 setIdProduct(row._id);

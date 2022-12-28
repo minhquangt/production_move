@@ -10,30 +10,32 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function AgencyDetails() {
-    const { id } = useParams();
+function GuaranteeDetails() {
     const [rows, setRows] = useState([]);
-    const [storage, setStorage] = useState([]);
-
-    const getAmount = (id) => {
-        var result = storage.find((item) => {
-            return item.id === id;
-        });
-        return result.amount;
-    };
+    const [listProducts, setListProducts] = useState([]);
+    const id = useParams();
 
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/agency/${id}`);
-                setRows(res.data.products);
-                setStorage(res.data.agency.storage);
+                const res = await axios.get(`http://localhost:5000/guarantee/guaranteeOrder/${id.id}`);
+                if (res) {
+                    setRows(res.data.guaranteeOrders);
+                    setListProducts(res.data.productGuarantees);
+                }
             } catch (err) {
                 console.error(err);
             }
         };
         getData();
     }, [id]);
+
+    const getNameProduct = (id) => {
+        let product = listProducts.find((product) => {
+            return product._id === id;
+        });
+        return product.nameProduct;
+    };
 
     return (
         <>
@@ -49,9 +51,9 @@ function AgencyDetails() {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">STT</TableCell>
-                                <TableCell align="center">Mã Sản Phẩm</TableCell>
+                                <TableCell align="center">Mã đơn hàng</TableCell>
                                 <TableCell align="center">Tên sản phẩm</TableCell>
-                                <TableCell align="center">Số lượng</TableCell>
+                                <TableCell align="center">Lỗi</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -63,11 +65,11 @@ function AgencyDetails() {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center">{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sortDirection="desc">
-                                        {row.code}
+                                    <TableCell component="th" scope="row" sx={{ maxWidth: '200px' }}>
+                                        {row.idOrder}
                                     </TableCell>
-                                    <TableCell align="center">{row.name}</TableCell>
-                                    <TableCell align="center">{getAmount(row._id)}</TableCell>
+                                    <TableCell sx={{ maxWidth: '200px' }}>{getNameProduct(row.idOrder)}</TableCell>
+                                    <TableCell align="center">{row.error}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -78,4 +80,4 @@ function AgencyDetails() {
     );
 }
 
-export default AgencyDetails;
+export default GuaranteeDetails;
