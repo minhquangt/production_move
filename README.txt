@@ -3,18 +3,12 @@ Thành viên
 - Nguyễn Văn Vũ – 20020504 
 - Nguyễn Thanh Tùng – 20020270
 
-Phân chia công việc
+Phân chia công việc:
 - Nguyễn Thanh Tùng (Backend ExpressJS + MongoDB)
 + Thiết kế và xây dựng database
 + Xây dựng cấu trúc ban đầu cho dự án theo mô hình MVC
 + Cấu hình và kết nối với database
 + Xây dựng các model user, product, order, orderGuarantee, guarantee, factory, delivery, customer, agency
-+ Xây dựng các hàm xử lý cho user
-  - Thêm, sửa, xóa, đăng nhập
-  - Lấy ra danh sách tất cả các user theo từng vai trò khác nhau
-+ Xây dựng các hàm xử lý cho product
-  - Thêm, sửa, xóa
-  - Lấy ra danh sách tất cả các product theo từng điều kiện khác nhau
 + Xây dựng các hàm xử lý khi order
   - Tạo hóa đơn
   - Lấy ra tất cả các hóa đơn theo id của các Đại lý
@@ -42,17 +36,30 @@ Phân chia công việc
   - Lấy ra thông tin các đơn hàng được Trung tâm bảo hành chuyển trả cho Kho
   - Lấy ra thông tin các đơn hàng được Trung tâm bảo hành bảo hành thành công chuyển về cho Đại lý
   - Cập nhật thông tin đơn hàng được chuyển đến Trung tâm bảo hành 
-- Nguyễn Văn Vũ (Frontend ReactJS)
+
+- Nguyễn Văn Vũ (Frontend ReactJS) + (Backend ExpressJS + MongoDB)
++ Thiết kế và xây dựng database
++ Xây dựng các model user, product, order, orderGuarantee, guarantee, factory, delivery, customer, agency
++ Xây dựng các hàm xử lý cho product
+  - Thêm, sửa, xóa
+  - Lấy ra danh sách tất cả các product theo từng điều kiện khác nhau
 + Xây dựng trang quản lý dành cho Đại lý
   - Tạo giao diện Quản lý sản phẩm
   - Tạo hóa đơn bán hàng khi người dùng mua sản phẩm
   - Xây dựng chức năng nhập hàng từ Kho sản xuất chuyển tới
   - Xây dựng chức năng bảo hành khi sản phẩm bị lỗi và chuyển trả cho khách hàng khi sản phẩm đã bảo hành thành công
   - Thống kê trạng thái của các sản phẩm đang được vận chuyển từ Đại lý đến Trung tâm bảo hành
-+ Xây dựng trang quản lý dành cho Đại lý
++ Xây dựng trang quản lý dành cho Trung tâm bảo hành
   - Xây dựng chức năng nhận hàng từ Đại lý chuyển tới
-  - Thống kê các sản phẩm đang được bảo hành
-- Trần Minh Quang (Frontend ReactJS)
+  - Thống kê các sản phẩm đang được bảo hành, 
+  - Sau khi bảo hành có thể chuyển sản phẩm về Đại lý nếu thành công hoặc Kho sản xuất nếu thất bại
+
+- Trần Minh Quang (Frontend ReactJS) + (Backend ExpressJS + MongoDB)
++ Thiết kế và xây dựng database
++ Xây dựng các model user, product, order, orderGuarantee, guarantee, factory, delivery, customer, agency
++ Xây dựng các hàm xử lý cho user
+  - Thêm, sửa, xóa, đăng nhập
+  - Lấy ra danh sách tất cả các user theo từng vai trò khác nhau
 + Xây dưng trang quản lý dành cho Admin
   - Xây dựng giao diện và chức năng thêm sửa xóa sản phẩm
   - Xây dựng giao diện và chức năng thêm sửa xóa tài khoản Admin, Kho sản xuất, Đại lý, Trung tâm bảo hành
@@ -65,6 +72,7 @@ Phân chia công việc
   - Xây dựng chức năng chuyển hàng tới các Đại lý
   - Thống kê các sản phẩm lỗi được chuyển từ Trung tâm bảo hành về
   - Thống kê trạng thái của các sản phẩm đang được vận chuyển từ Kho đến Đại lý
+
 Cách để chạy project:
 - Tại thư mục server
 + Mở terminal, gõ lệnh: npm install
