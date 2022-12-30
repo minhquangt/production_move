@@ -80,3 +80,4 @@ Cách để chạy project:
 - Tại thư mục client
 + Mở terminal, gõ lệnh: npm install
 + Sau khi quá trình install thực hiện xong, gõ lệnh: npm start
+Link github: https://github.com/minhquangt/production_move
