@@ -1,17 +1,29 @@
-import { Box, Button, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import axiosClient from '~/api/axiosClient';
 
+let deliveriesClone = [];
 function GuaranteeDelivery() {
     const [deliveries, setDeliveries] = useState([]);
-
+    const [dateFrom, setDateFrom] = useState('2022-10-30');
+    const [dateTo, setDateTo] = useState(moment(Date.now()).format('YYYY-MM-DD'));
     useEffect(() => {
         const getData = async () => {
             try {
                 const res = await axiosClient.get(`/delivery/to/${localStorage.getItem('idPage')}`);
-                // console.log(res.data);
                 const newDeliveries = res.data.filter((delivery) => {
                     return delivery.status !== 'Giao hàng thành công';
                 });
@@ -22,7 +34,6 @@ function GuaranteeDelivery() {
         };
         getData();
     }, []);
-
     const getDate = (data) => {
         let date = new Date(data);
         let year = date.getFullYear();
@@ -36,12 +47,36 @@ function GuaranteeDelivery() {
             month = '0' + month;
         }
 
-        return dt + '/' + month + '/' + year;
+        return year + '-' + month + '-' + dt;
     };
 
-    const handleClickAccept = async (idGuaranteeOrder, idDelivery) => {
-        // console.log(idGuaranteeOrder);
+    const handleFilterDeliveriesByDate = (dateTmp, type) => {
+        let dateFromTmp;
+        let dateToTmp;
+        if (type === 'from') {
+            setDateFrom(dateTmp);
+            dateFromTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateToTmp = dateTo;
+        } else {
+            setDateTo(dateTmp);
+            dateToTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateFromTmp = dateFrom;
+        }
 
+        const deliveriesTmp = [];
+        for (let i = 0; i < deliveriesClone.length; i++) {
+            if (
+                moment(getDate(deliveriesClone[i].createdAt)).isAfter(dateFromTmp) &&
+                moment(dateToTmp).isAfter(getDate(deliveriesClone[i].createdAt))
+            ) {
+                console.log(deliveriesClone[i]);
+                deliveriesTmp.push(deliveriesClone[i]);
+            }
+        }
+
+        setDeliveries(deliveriesTmp);
+    };
+    const handleClickAccept = async (idGuaranteeOrder, idDelivery) => {
         try {
             const res = await axiosClient.put(`/delivery/updateStatus/${idDelivery}`, {
                 status: 'Giao hàng thành công',
@@ -76,67 +111,75 @@ function GuaranteeDelivery() {
                         margin: '10px 10px',
                     }}
                 >
-                    <Typography sx={{ color: '#666', fontWeight: '600' }} variant="span">
-                        Đang vận chuyển:
+                    <Typography id="transition-modal-title" variant="h6" component="h2">
+                        Filter by date
                     </Typography>
-
+                    <div style={{ display: 'flex' }}>
+                        <div style={{ marginRight: '10px' }}>
+                            <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                                From
+                            </Typography>
+                            <input
+                                type="date"
+                                value={dateFrom}
+                                onChange={(e) => handleFilterDeliveriesByDate(e.target.value, 'from')}
+                            />
+                        </div>
+                        <div>
+                            <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                                To
+                            </Typography>
+                            <input
+                                type="date"
+                                value={dateTo}
+                                onChange={(e) => handleFilterDeliveriesByDate(e.target.value, 'to')}
+                            />
+                        </div>
+                    </div>
                     <List
                         sx={{
                             Width: '100%',
                         }}
                     >
-                        {deliveries.map((delivery) => (
-                            <ListItem
-                                key={delivery._id}
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    padding: '5px',
-                                    borderBottom: '1px solid #ccc',
-                                }}
-                            >
-                                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                                    <Typography sx={{ color: '#666', fontSize: '1rem' }} variant="span">
-                                        Mã bảo hành
-                                    </Typography>
-                                    <Typography sx={{ color: '#666', fontSize: '1rem' }} variant="span">
-                                        {delivery.idGuaranteeOrder}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                                    <Typography sx={{ color: '#666', fontSize: '1rem' }} variant="span">
-                                        Vận chuyển từ
-                                    </Typography>
-                                    <Typography sx={{ color: '#666', fontSize: '1rem' }} variant="span">
-                                        {delivery.nameFrom}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                                    <Typography sx={{ color: '#666', fontSize: '1rem' }} variant="span">
-                                        Ngày giao hàng:
-                                    </Typography>
-                                    <Typography sx={{ color: '#666', fontSize: '1rem' }} variant="span">
-                                        {getDate(delivery.createdAt)}
-                                    </Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        width: '100%',
-                                        display: 'flex',
-                                        justifyContent: 'right',
-                                        margin: '10px 0',
-                                    }}
-                                >
-                                    <Button
-                                        onClick={() => handleClickAccept(delivery.idGuaranteeOrder, delivery._id)}
-                                        variant="contained"
-                                        color="primary"
-                                    >
-                                        Đã nhận được hàng
-                                    </Button>
-                                </Box>
-                            </ListItem>
-                        ))}
+                        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+                            <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">STT</TableCell>
+                                        <TableCell align="center">Mã bảo hành</TableCell>
+                                        <TableCell align="center">Vận chuyển từ</TableCell>
+                                        <TableCell align="center">Ngày giao hàng</TableCell>
+                                        <TableCell align="center">Hành động</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {deliveries.map((delivery, index) => (
+                                        <TableRow
+                                            id={index}
+                                            className="row"
+                                            key={index}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="center">{index + 1}</TableCell>
+                                            <TableCell align="center">{delivery.idGuaranteeOrder}</TableCell>
+                                            <TableCell align="center">{delivery.nameFrom}</TableCell>
+                                            <TableCell align="center">{getDate(delivery.createdAt)}</TableCell>
+                                            <TableCell align="center">
+                                                <Button
+                                                    onClick={() =>
+                                                        handleClickAccept(delivery.idGuaranteeOrder, delivery._id)
+                                                    }
+                                                    variant="contained"
+                                                    color="primary"
+                                                >
+                                                    Đã nhận được hàng
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </List>
                 </Box>
             </Box>

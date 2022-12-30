@@ -10,18 +10,23 @@ import {
     Typography,
 } from '@mui/material';
 import List from '@mui/material/List';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import axiosClient from '~/api/axiosClient';
 
+let deliveriesClone = [];
+
 function AgencyDelivery() {
     const [deliveries, setDeliveries] = useState([]);
-
+    const [dateFrom, setDateFrom] = useState('2022-10-30');
+    const [dateTo, setDateTo] = useState(moment(Date.now()).format('YYYY-MM-DD'));
     useEffect(() => {
         const getData = async () => {
             try {
                 const res = await axiosClient.get(`/delivery/from/${localStorage.getItem('idPage')}`);
-                // console.log(res.data);
+                console.log(res.data);
                 setDeliveries(res.data);
+                deliveriesClone = res.data;
             } catch (e) {
                 console.log(e);
             }
@@ -42,7 +47,33 @@ function AgencyDelivery() {
             month = '0' + month;
         }
 
-        return dt + '/' + month + '/' + year;
+        return year + '-' + month + '-' + dt;
+    };
+
+    const handleFilterDeliveriesByDate = (dateTmp, type) => {
+        let dateFromTmp;
+        let dateToTmp;
+        if (type === 'from') {
+            setDateFrom(dateTmp);
+            dateFromTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateToTmp = dateTo;
+        } else {
+            setDateTo(dateTmp);
+            dateToTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateFromTmp = dateFrom;
+        }
+
+        const deliveriesTmp = [];
+        for (let i = 0; i < deliveriesClone.length; i++) {
+            if (
+                moment(getDate(deliveriesClone[i].createdAt)).isAfter(dateFromTmp) &&
+                moment(dateToTmp).isAfter(getDate(deliveriesClone[i].createdAt))
+            ) {
+                deliveriesTmp.push(deliveriesClone[i]);
+            }
+        }
+
+        setDeliveries(deliveriesTmp);
     };
 
     return (
@@ -60,9 +91,31 @@ function AgencyDelivery() {
                         margin: '10px 10px',
                     }}
                 >
-                    <Typography sx={{ color: '#666', fontWeight: '600' }} variant="span">
-                        Đang vận chuyển:
+                    <Typography id="transition-modal-title" variant="h6" component="h2">
+                        Filter by date
                     </Typography>
+                    <div style={{ display: 'flex' }}>
+                        <div style={{ marginRight: '10px' }}>
+                            <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                                From
+                            </Typography>
+                            <input
+                                type="date"
+                                value={dateFrom}
+                                onChange={(e) => handleFilterDeliveriesByDate(e.target.value, 'from')}
+                            />
+                        </div>
+                        <div>
+                            <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                                To
+                            </Typography>
+                            <input
+                                type="date"
+                                value={dateTo}
+                                onChange={(e) => handleFilterDeliveriesByDate(e.target.value, 'to')}
+                            />
+                        </div>
+                    </div>
 
                     <List
                         sx={{

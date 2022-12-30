@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import DrawerCompAdmin from '../DrawerCompAgency';
 
 const allTabs = ['/agency/storage', '/agency/import', '/agency/sold', '/agency/guarantee', '/agency/delivery'];
-const pages = ['Quản lý Kho', 'Nhập hàng', 'Sản Phẩm đã bán', 'Sản Phẩm bảo hành', 'Vận chuyển'];
+const pages = ['Quản lý Sản phẩm', 'Nhập hàng', 'Sản Phẩm đã bán', 'Sản Phẩm bảo hành', 'Vận chuyển'];
 
 const HeaderAgency = () => {
     const [value, setValue] = useState('/agency/storage');

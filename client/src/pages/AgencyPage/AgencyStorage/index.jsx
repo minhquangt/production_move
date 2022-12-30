@@ -84,9 +84,7 @@ function AgencyStorage() {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center">{index + 1}</TableCell>
-                                    <TableCell align="center" component="th" scope="row" sortDirection="desc">
-                                        {row.code}
-                                    </TableCell>
+                                    <TableCell align="center">{row.code}</TableCell>
                                     <TableCell align="center">
                                         <img src={row.image} alt={row.image} style={{ width: 100, height: 120 }} />
                                     </TableCell>

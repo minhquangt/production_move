@@ -29,7 +29,7 @@ export default function Login() {
                 setPassword('');
                 localStorage.setItem('role', res.data.role);
                 localStorage.setItem('id', res.data.id);
-                localStorage.setItem('name', res.data.username);
+                localStorage.setItem('name', res.data.name);
                 localStorage.setItem('email', res.data.email);
                 localStorage.setItem('idPage', res.data.idPage);
                 navigate(`/`);

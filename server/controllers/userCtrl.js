@@ -59,7 +59,6 @@ const userCtrl = {
 
             res.json({ msg: 'Register successfully', register: true });
         } catch (error) {
-            console.log(error);
             return res.status(500).json({ msg: error.message });
         }
     },

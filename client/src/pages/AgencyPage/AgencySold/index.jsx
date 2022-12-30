@@ -13,6 +13,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import axiosClient from '~/api/axiosClient';
+import moment from 'moment';
 
 const styleModal = {
     position: 'absolute',
@@ -25,6 +26,8 @@ const styleModal = {
     borderRadius: '10px',
     p: 3,
 };
+
+let ordersClone = [];
 
 function AgencySold() {
     const [rows, setRows] = useState([]);
@@ -42,6 +45,8 @@ function AgencySold() {
     const [idOrder, setIdOrder] = useState('');
     const [error, setError] = useState('');
 
+    const [dateFrom, setDateFrom] = useState('2022-10-30');
+    const [dateTo, setDateTo] = useState(moment(Date.now()).format('YYYY-MM-DD'));
     useEffect(() => {
         const getData = async () => {
             try {
@@ -49,6 +54,7 @@ function AgencySold() {
                 setRows(res.data.orders);
                 setNameAgency(res.data.nameAgency);
                 setListProducts(res.data.products);
+                ordersClone = res.data.orders;
             } catch (err) {
                 console.error(err);
             }
@@ -74,7 +80,33 @@ function AgencySold() {
             month = '0' + month;
         }
 
-        return dt + '/' + month + '/' + year;
+        return year + '-' + month + '-' + dt;
+    };
+
+    const handleFilterOrdersByDate = (dateTmp, type) => {
+        let dateFromTmp;
+        let dateToTmp;
+        if (type === 'from') {
+            setDateFrom(dateTmp);
+            dateFromTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateToTmp = dateTo;
+        } else {
+            setDateTo(dateTmp);
+            dateToTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateFromTmp = dateFrom;
+        }
+
+        const ordersTmp = [];
+        for (let i = 0; i < ordersClone.length; i++) {
+            if (
+                moment(getDate(ordersClone[i].createdAt)).isAfter(dateFromTmp) &&
+                moment(dateToTmp).isAfter(getDate(ordersClone[i].createdAt))
+            ) {
+                ordersTmp.push(ordersClone[i]);
+            }
+        }
+
+        setRows(ordersTmp);
     };
 
     const compareDate = (data) => {
@@ -140,6 +172,31 @@ function AgencySold() {
                     >
                         Tạo hóa đơn
                     </Button>
+                    <Typography id="transition-modal-title" variant="h6" component="h2">
+                        Filter by date
+                    </Typography>
+                    <div style={{ display: 'flex' }}>
+                        <div style={{ marginRight: '10px' }}>
+                            <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                                From
+                            </Typography>
+                            <input
+                                type="date"
+                                value={dateFrom}
+                                onChange={(e) => handleFilterOrdersByDate(e.target.value, 'from')}
+                            />
+                        </div>
+                        <div>
+                            <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                                To
+                            </Typography>
+                            <input
+                                type="date"
+                                value={dateTo}
+                                onChange={(e) => handleFilterOrdersByDate(e.target.value, 'to')}
+                            />
+                        </div>
+                    </div>
                     <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
@@ -160,9 +217,7 @@ function AgencySold() {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center">{index + 1}</TableCell>
-                                    <TableCell align="center" component="th" scope="row" sortDirection="desc">
-                                        {row.nameProduct}
-                                    </TableCell>
+                                    <TableCell align="center">{row.nameProduct}</TableCell>
                                     <TableCell align="center">{row.idCustomer}</TableCell>
                                     <TableCell align="center">{PriceVND(row.price)}</TableCell>
                                     <TableCell align="center">{getDate(row.createdAt)}</TableCell>

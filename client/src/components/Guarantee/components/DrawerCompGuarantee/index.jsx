@@ -3,8 +3,8 @@ import { Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText } 
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const pages = ['Sản phẩm được gửi', 'Đang bảo hành', 'Thống kê'];
-const allTabs = ['/guarantee/delivery', '/guarantee/product', '/guarantee/statistical'];
+const pages = ['Sản phẩm được gửi', 'Đang bảo hành'];
+const allTabs = ['/guarantee/delivery', '/guarantee/product'];
 
 const DrawerCompGuarantee = () => {
     const [openDrawer, setOpenDrawer] = useState(false);

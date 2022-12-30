@@ -1,4 +1,15 @@
-import { Box, Button, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
@@ -86,16 +97,12 @@ function AgencyImport() {
                         margin: '10px 10px',
                     }}
                 >
-                    <Typography sx={{ color: '#666', fontWeight: '600' }} variant="span">
-                        Đang vận chuyển:
-                    </Typography>
-
                     <List
                         sx={{
                             Width: '100%',
                         }}
                     >
-                        {deliveries.length !== 0 ? (
+                        {/* {deliveries.length !== 0 ? (
                             deliveries.map((delivery) => (
                                 <ListItem
                                     key={delivery._id}
@@ -156,7 +163,53 @@ function AgencyImport() {
                                     Không có vận chuyển
                                 </Typography>
                             </>
-                        )}
+                        )} */}
+
+                        <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
+                            <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">STT</TableCell>
+                                        <TableCell align="center">Mã sản phẩm</TableCell>
+                                        <TableCell align="center">Số lượng</TableCell>
+                                        <TableCell align="center">Vận chuyển từ</TableCell>
+                                        <TableCell align="center">Ngày giao hàng</TableCell>
+                                        <TableCell align="center">Hành động</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {deliveries.map((delivery, index) => (
+                                        <TableRow
+                                            id={index}
+                                            className="row"
+                                            key={index}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="center">{index + 1}</TableCell>
+                                            <TableCell align="center">{delivery.nameProduct}</TableCell>
+                                            <TableCell align="center">{delivery.amount}</TableCell>
+                                            <TableCell align="center">{delivery.nameFrom}</TableCell>
+                                            <TableCell align="center">{getDate(delivery.createdAt)}</TableCell>
+                                            <TableCell align="center">
+                                                <Button
+                                                    onClick={() =>
+                                                        handleClickAccept(
+                                                            delivery.idProduct,
+                                                            delivery.amount,
+                                                            delivery._id,
+                                                        )
+                                                    }
+                                                    variant="contained"
+                                                    color="primary"
+                                                >
+                                                    Đã nhận được hàng
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </List>
                 </Box>
             </Box>

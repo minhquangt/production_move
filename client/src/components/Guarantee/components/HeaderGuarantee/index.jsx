@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import DrawerCompGuarantee from '../DrawerCompGuarantee';
 
-const allTabs = ['/guarantee/delivery', '/guarantee/product', '/guarantee/statistical'];
-const pages = ['Sản phẩm được gửi', 'Đang bảo hành', 'Thống kê'];
+const allTabs = ['/guarantee/delivery', '/guarantee/product'];
+const pages = ['Sản phẩm được gửi', 'Đang bảo hành'];
 
 const HeaderGuarantee = () => {
     const [value, setValue] = useState('/guarantee/delivery');

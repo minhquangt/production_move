@@ -163,9 +163,7 @@ function UserAgencyDetails() {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center">{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sortDirection="desc">
-                                        {row.name}
-                                    </TableCell>
+                                    <TableCell align="center">{row.name}</TableCell>
                                     <TableCell align="center">{row.email}</TableCell>
                                     <TableCell align="center">{row.sdt}</TableCell>
                                     <TableCell align="center">{row.address}</TableCell>

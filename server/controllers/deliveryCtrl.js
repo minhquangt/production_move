@@ -7,9 +7,7 @@ const deliveryCtrl = {
         try {
             const { from, nameFrom, to, nameTo, idProduct, amount, status } =
                 req.body;
-            console.log(from + ' ' + to + ' ' + idProduct + ' ' + amount + ' ');
             const product = await Products.findOne({ _id: idProduct });
-            console.log(product.code);
             const newDelivery = new Deliveries({
                 from: from,
                 nameFrom: nameFrom,
@@ -32,14 +30,10 @@ const deliveryCtrl = {
         try {
             const { from, nameFrom, to, nameTo, idGuaranteeOrder, status } =
                 req.body;
-            // console.log(
-            //   from + " " + nameFrom + " " + to + " " + idGuaranteeOrder + " " + status
-            // );
             const guaranteeOrder = await GuaranteeOrders.findOne({
                 _id: idGuaranteeOrder,
             });
             if (guaranteeOrder) {
-                console.log(guaranteeOrder);
                 await GuaranteeOrders.findByIdAndUpdate(
                     idGuaranteeOrder,
                     {

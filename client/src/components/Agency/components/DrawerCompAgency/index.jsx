@@ -3,7 +3,7 @@ import { Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText } 
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const pages = ['Quản lý Kho', 'Nhập hàng', 'Sản Phẩm đã bán', 'Sản Phẩm bảo hành', 'Vận chuyển'];
+const pages = ['Quản lý sản phẩm', 'Nhập hàng', 'Sản Phẩm đã bán', 'Sản Phẩm bảo hành', 'Vận chuyển'];
 const allTabs = ['/agency/storage', '/agency/import', '/agency/sold', '/agency/guarantee', '/agency/delivery'];
 
 const DrawerCompAgency = () => {

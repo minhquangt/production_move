@@ -65,10 +65,8 @@ function GuaranteeDetails() {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center">{index + 1}</TableCell>
-                                    <TableCell component="th" scope="row" sx={{ maxWidth: '200px' }}>
-                                        {row.idOrder}
-                                    </TableCell>
-                                    <TableCell sx={{ maxWidth: '200px' }}>{getNameProduct(row.idOrder)}</TableCell>
+                                    <TableCell align="center">{row.idOrder}</TableCell>
+                                    <TableCell align="center">{getNameProduct(row.idOrder)}</TableCell>
                                     <TableCell align="center">{row.error}</TableCell>
                                 </TableRow>
                             ))}

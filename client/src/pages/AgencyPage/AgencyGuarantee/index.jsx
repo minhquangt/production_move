@@ -13,6 +13,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
 import axiosClient from '~/api/axiosClient';
+import moment from 'moment';
 
 const styleModal = {
     position: 'absolute',
@@ -26,6 +27,8 @@ const styleModal = {
     p: 3,
 };
 
+let guaranteeOrdersClone = [];
+
 function AgencyGuarantee() {
     const [rows, setRows] = useState([]);
     const [listProducts, setListProducts] = useState([]);
@@ -37,6 +40,9 @@ function AgencyGuarantee() {
     const [openModalGuarantee, setOpenModalGuarantee] = useState(false);
     const [idGuaranteeExport, setIdGuaranteeExport] = useState('');
 
+    const [dateFrom, setDateFrom] = useState('2022-10-30');
+    const [dateTo, setDateTo] = useState(moment(Date.now()).format('YYYY-MM-DD'));
+
     useEffect(() => {
         const getData = async () => {
             try {
@@ -47,8 +53,8 @@ function AgencyGuarantee() {
                     console.log(resGuarantees.data);
                 }
                 if (res) {
-                    // console.log(res.data);
                     setRows(res.data.guaranteeOrders);
+                    guaranteeOrdersClone = res.data.guaranteeOrders;
                     setListProducts(res.data.productGuarantees);
                 }
             } catch (err) {
@@ -63,22 +69,6 @@ function AgencyGuarantee() {
             return product._id === id;
         });
         return product.nameProduct;
-    };
-
-    const getDate = (data) => {
-        let date = new Date(data);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let dt = date.getDate();
-
-        if (dt < 10) {
-            dt = '0' + dt;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
-
-        return dt + '/' + month + '/' + year;
     };
 
     const handleDeliveryGuarantee = async () => {
@@ -105,7 +95,6 @@ function AgencyGuarantee() {
     };
 
     const handleDeliveryCustomer = async () => {
-        // console.log(idOrder);
         try {
             const res = await axiosClient.put(`/agency/updateNotGuaranteeOrder/${idGuaranteeOrder}`);
             if (res.data.update) {
@@ -115,6 +104,48 @@ function AgencyGuarantee() {
         } catch (e) {
             console.log(e);
         }
+    };
+
+    const getDate = (data) => {
+        let date = new Date(data);
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let dt = date.getDate();
+
+        if (dt < 10) {
+            dt = '0' + dt;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+
+        return year + '-' + month + '-' + dt;
+    };
+
+    const handleFilterDeliveriesByDate = (dateTmp, type) => {
+        let dateFromTmp;
+        let dateToTmp;
+        if (type === 'from') {
+            setDateFrom(dateTmp);
+            dateFromTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateToTmp = dateTo;
+        } else {
+            setDateTo(dateTmp);
+            dateToTmp = moment(dateTmp).format('YYYY-MM-DD');
+            dateFromTmp = dateFrom;
+        }
+
+        const guaranteeOrdersCloneTmp = [];
+        for (let i = 0; i < guaranteeOrdersClone.length; i++) {
+            if (
+                moment(getDate(guaranteeOrdersClone[i].createdAt)).isAfter(dateFromTmp) &&
+                moment(dateToTmp).isAfter(getDate(guaranteeOrdersClone[i].createdAt))
+            ) {
+                guaranteeOrdersCloneTmp.push(guaranteeOrdersClone[i]);
+            }
+        }
+
+        setRows(guaranteeOrdersCloneTmp);
     };
 
     return (
@@ -127,6 +158,31 @@ function AgencyGuarantee() {
                     overflowY: 'scroll',
                 }}
             >
+                <Typography id="transition-modal-title" variant="h6" component="h2">
+                    Filter by date
+                </Typography>
+                <div style={{ display: 'flex' }}>
+                    <div style={{ marginRight: '10px' }}>
+                        <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                            From
+                        </Typography>
+                        <input
+                            type="date"
+                            value={dateFrom}
+                            onChange={(e) => handleFilterDeliveriesByDate(e.target.value, 'from')}
+                        />
+                    </div>
+                    <div>
+                        <Typography id="transition-modal-title" variant="h6" component="h2" align="center">
+                            To
+                        </Typography>
+                        <input
+                            type="date"
+                            value={dateTo}
+                            onChange={(e) => handleFilterDeliveriesByDate(e.target.value, 'to')}
+                        />
+                    </div>
+                </div>
                 <TableContainer sx={{ marginTop: '10px' }} component={Paper}>
                     <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
                         <TableHead>
